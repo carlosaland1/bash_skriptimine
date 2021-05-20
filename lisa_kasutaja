@@ -1,0 +1,22 @@
+#!/bin/bash
+#
+# kasutaja lisamine
+# autor - Carlos Aland
+
+if [ $# -ne 1 ]; then
+    echo "Help: $0 kasutajanimi"
+else
+  nimi=$1 
+  useradd $nimi -m -s /bin/bash
+  kasutaja=$?
+  #
+  if [ $kasutaja -eq 0 ]; then
+    echo "Kasutaja nimega $nimi on lisatud süsteemi"
+    cat /etc/passwd | grep $nimi
+    ls -la /home/$nimi
+  else
+    echo "Probleem kasutaja $nimi lisamisega"
+  fi
+#
+fi
+
