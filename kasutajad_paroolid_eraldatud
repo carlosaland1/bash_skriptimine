@@ -1,0 +1,23 @@
+#!/bin/bash
+#
+# kasutajate lisamise skript
+
+if [ $# -ne 2 ]; then
+    echo "Help: $0 failinimi"
+else
+  failinimi=$1
+  failinimi2=$2
+  if [ -f $failinimi -a -r $failinimi ] && [ -f $failinimi2 -a -r $failinimi2 ]; then
+    echo "Fail on korras"
+    for rida in $(paste -d: $failinimi $failinimi2)
+    do
+	  kasutajanimi=$(echo "$rida" | cut -f1 -d:)
+	  sh lisa_kasutaja $kasutajanimi
+	  echo "$rida" | chpasswd
+    done
+  else
+    echo "Probleem failiga $failinimi"
+  fi
+fi
+
+
