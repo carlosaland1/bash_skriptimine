@@ -1,0 +1,27 @@
+#!/bin/bash
+# skripti algus
+# kasutaja lisamine genereeritud parooliga ainult root kasutajana
+
+kaivitav_kasutaja=$(whoami)
+if [ $kaivitav_kasutaja = "root" ]; then
+	if [ $# -ne 1 ]; then
+        echo "Help: $0 failinimi"
+	else
+ 		kasutajad=$1
+  		if [ -f $kasutajad -a -r $kasutajad ]; then
+   		echo "fail on olemas!"
+    		for rida in $(paste -d: $kasutajad $paroolid)
+    		do
+        		kasutajanimi=$(echo "$rida")
+        		sh lisa_kasutaja $kasutajanimi
+        		parool=$(pwgen -s 8 1)
+        		echo "$kasutajanimi:$parool" | chpasswd
+        		echo "$kasutajanimi - $parool" >> loodud_kasutajad_paroolidega
+    		done
+ 	 else
+    	 echo "Probleem failiga $failinimi"
+ 	 fi
+	 fi
+else
+	 echo "Sul pole piisavalt õigusi, et skripti käivitada"
+fi
